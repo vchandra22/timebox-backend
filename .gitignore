@@ -1,0 +1,20 @@
+# Local config
+config.yaml
+
+# Go build/test output
+bin/
+build/
+dist/
+*.exe
+*.test
+*.out
+coverage.out
+
+# Logs and temp files
+*.log
+tmp/
+temp/
+
+# Editor/IDE
+.idea/
+.vscode/

@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Check formatting
+        run: |
+          files="$(gofmt -l .)"
+          [ -z "$files" ] || { printf '%s\n' "$files"; exit 1; }
+      - name: Vet
+        run: go vet ./...
+      - name: Architecture lint
+        run: go run github.com/fe3dback/go-arch-lint@v1.15.0 check --project-path .

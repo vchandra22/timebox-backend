@@ -1,0 +1,118 @@
+version: 3
+workdir: internal
+
+components:
+  bootstrap: { in: bootstrap }
+  config: { in: config }
+  dto: { in: dto/** }
+  entity: { in: entity }
+  handler: { in: handler }
+  middleware: { in: middleware }
+  migration: { in: migration }
+  repository_registry: { in: repository }
+  dbexecutor: { in: repository/dbexecutor }
+  health_repository: { in: repository/health }
+  health_repository_database: { in: repository/health/database }
+  user_repository: { in: repository/user }
+  user_repository_database: { in: repository/user/database }
+  response: { in: response }
+  router: { in: router }
+  service: { in: service }
+  utils: { in: utils }
+
+vendors:
+  cors: { in: github.com/gin-contrib/cors }
+  gin: { in: github.com/gin-gonic/gin }
+  pgconn: { in: github.com/jackc/pgx/v5/pgconn }
+  pgx_stdlib: { in: github.com/jackc/pgx/v5/stdlib }
+  redis: { in: github.com/redis/go-redis/v9 }
+  sqlx: { in: github.com/jmoiron/sqlx }
+  viper: { in: github.com/spf13/viper }
+  zap: { in: go.uber.org/zap }
+
+deps:
+  bootstrap:
+    mayDependOn:
+      - config
+    canUse:
+      - pgx_stdlib
+      - redis
+      - sqlx
+      - viper
+      - zap
+
+  config:
+    canUse:
+      - redis
+      - sqlx
+
+  router:
+    mayDependOn:
+      - handler
+      - middleware
+    canUse:
+      - cors
+      - gin
+      - zap
+
+  handler:
+    mayDependOn:
+      - dto
+      - entity
+      - response
+      - service
+      - utils
+    canUse:
+      - gin
+
+  middleware:
+    canUse:
+      - gin
+      - zap
+
+  migration:
+    canUse:
+      - sqlx
+
+  dbexecutor:
+    canUse:
+      - sqlx
+      - zap
+
+  service:
+    mayDependOn:
+      - entity
+      - health_repository
+      - repository_registry
+      - user_repository
+
+  repository_registry:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - health_repository
+      - health_repository_database
+      - user_repository
+      - user_repository_database
+
+  health_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+
+  user_repository:
+    mayDependOn:
+      - entity
+
+  user_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - entity
+      - user_repository
+    canUse:
+      - pgconn
+
+  response:
+    canUse:
+      - gin
