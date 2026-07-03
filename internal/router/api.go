@@ -11,5 +11,6 @@ func registerRoutes(r *gin.Engine, handlers *handler.Handler) {
 
 	handlers.Auth.RegisterRoutes(api)
 	handlers.Health.RegisterRoutes(api)
+	handlers.Planning.RegisterRoutes(api)
 	handlers.Workspace.RegisterRoutes(api)
 }
