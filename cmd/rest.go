@@ -48,6 +48,10 @@ var restCommand = &cobra.Command{
 			Secret:            appConfig.JWT.Secret,
 			AccessTTLSeconds:  appConfig.JWT.AccessTTLSeconds,
 			RefreshTTLSeconds: appConfig.JWT.RefreshTTLSeconds,
+		}, service.CollaborationOptions{
+			CloudName: appConfig.External.Cloudinary.CloudName,
+			APIKey:    appConfig.External.Cloudinary.APIKey,
+			APISecret: appConfig.External.Cloudinary.APISecret,
 		})
 		handlers := handler.New(services)
 		r := router.NewRouter(handlers, log, appConfig.App.CORSAllowedOrigins, appConfig.App.GinMode)

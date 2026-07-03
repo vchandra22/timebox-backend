@@ -5,19 +5,23 @@ import (
 )
 
 type Service struct {
-	Auth      *AuthService
-	Health    *HealthService
-	Planning  *PlanningService
-	User      *UserService
-	Workspace *WorkspaceService
+	Auth          *AuthService
+	Collaboration *CollaborationService
+	Execution     *ExecutionService
+	Health        *HealthService
+	Planning      *PlanningService
+	User          *UserService
+	Workspace     *WorkspaceService
 }
 
-func New(repo *repository.Repository, authOptions AuthOptions) *Service {
+func New(repo *repository.Repository, authOptions AuthOptions, collaborationOptions CollaborationOptions) *Service {
 	return &Service{
-		Auth:      newAuthService(repo.Auth, repo.User, authOptions),
-		Health:    newHealthService(repo.Health),
-		Planning:  newPlanningService(repo.Planning, repo.Workspace),
-		User:      newUserService(repo.User),
-		Workspace: newWorkspaceService(repo.Workspace),
+		Auth:          newAuthService(repo.Auth, repo.User, authOptions),
+		Collaboration: newCollaborationService(repo.Collaboration, repo.Workspace, collaborationOptions),
+		Execution:     newExecutionService(repo.Execution, repo.ExecutionTimer, repo.Workspace),
+		Health:        newHealthService(repo.Health),
+		Planning:      newPlanningService(repo.Planning, repo.Workspace),
+		User:          newUserService(repo.User),
+		Workspace:     newWorkspaceService(repo.Workspace),
 	}
 }
