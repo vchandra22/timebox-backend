@@ -17,6 +17,8 @@ components:
   health_repository_database: { in: repository/health/database }
   user_repository: { in: repository/user }
   user_repository_database: { in: repository/user/database }
+  workspace_repository: { in: repository/workspace }
+  workspace_repository_database: { in: repository/workspace/database }
   response: { in: response }
   router: { in: router }
   service: { in: service }
@@ -89,6 +91,7 @@ deps:
       - health_repository
       - repository_registry
       - user_repository
+      - workspace_repository
     canUse:
       - bcrypt
 
@@ -102,6 +105,8 @@ deps:
       - health_repository_database
       - user_repository
       - user_repository_database
+      - workspace_repository
+      - workspace_repository_database
 
   health_repository_database:
     mayDependOn:
@@ -124,6 +129,19 @@ deps:
       - dbexecutor
       - entity
       - user_repository
+    canUse:
+      - pgconn
+
+  workspace_repository:
+    mayDependOn:
+      - entity
+
+  workspace_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - entity
+      - workspace_repository
     canUse:
       - pgconn
 
