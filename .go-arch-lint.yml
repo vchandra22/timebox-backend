@@ -10,6 +10,8 @@ components:
   middleware: { in: middleware }
   migration: { in: migration }
   repository_registry: { in: repository }
+  feature_repository: { in: repository/* }
+  feature_repository_database: { in: repository/*/database }
   auth_repository: { in: repository/auth }
   auth_repository_redis: { in: repository/auth/redis }
   dbexecutor: { in: repository/dbexecutor }
@@ -17,6 +19,8 @@ components:
   health_repository_database: { in: repository/health/database }
   user_repository: { in: repository/user }
   user_repository_database: { in: repository/user/database }
+  workspace_repository: { in: repository/workspace }
+  workspace_repository_database: { in: repository/workspace/database }
   response: { in: response }
   router: { in: router }
   service: { in: service }
@@ -86,9 +90,11 @@ deps:
     mayDependOn:
       - auth_repository
       - entity
+      - feature_repository
       - health_repository
       - repository_registry
       - user_repository
+      - workspace_repository
     canUse:
       - bcrypt
 
@@ -98,21 +104,41 @@ deps:
       - auth_repository_redis
       - config
       - dbexecutor
+      - feature_repository
+      - feature_repository_database
       - health_repository
       - health_repository_database
       - user_repository
       - user_repository_database
+      - workspace_repository
+      - workspace_repository_database
 
   health_repository_database:
     mayDependOn:
       - config
       - dbexecutor
+    canUse:
+      - sqlx
 
   auth_repository_redis:
     mayDependOn:
       - auth_repository
     canUse:
       - redis
+
+  feature_repository:
+    mayDependOn:
+      - entity
+
+  feature_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - entity
+      - feature_repository
+    canUse:
+      - pgconn
+      - sqlx
 
   user_repository:
     mayDependOn:
@@ -126,6 +152,21 @@ deps:
       - user_repository
     canUse:
       - pgconn
+      - sqlx
+
+  workspace_repository:
+    mayDependOn:
+      - entity
+
+  workspace_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - entity
+      - workspace_repository
+    canUse:
+      - pgconn
+      - sqlx
 
   response:
     canUse:
