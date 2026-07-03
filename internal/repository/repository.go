@@ -4,6 +4,8 @@ import (
 	"timebox-backend/internal/config"
 	"timebox-backend/internal/repository/auth"
 	authRedis "timebox-backend/internal/repository/auth/redis"
+	"timebox-backend/internal/repository/collaboration"
+	collaborationDatabase "timebox-backend/internal/repository/collaboration/database"
 	"timebox-backend/internal/repository/dbexecutor"
 	"timebox-backend/internal/repository/execution"
 	executionDatabase "timebox-backend/internal/repository/execution/database"
@@ -20,6 +22,7 @@ import (
 
 type Repository struct {
 	Auth           auth.Repository
+	Collaboration  collaboration.Repository
 	Execution      execution.Repository
 	ExecutionTimer execution.TimerRepository
 	Health         health.Repository
@@ -31,6 +34,7 @@ type Repository struct {
 func New(db config.PostgreSQL, redis config.Redis, dbExecutor *dbexecutor.Executor) *Repository {
 	return &Repository{
 		Auth:           authRedis.NewRepository(redis.Conn),
+		Collaboration:  collaborationDatabase.NewRepository(db, dbExecutor),
 		Execution:      executionDatabase.NewRepository(db, dbExecutor),
 		ExecutionTimer: executionRedis.NewRepository(redis.Conn),
 		Health:         database.NewRepository(db, dbExecutor),
