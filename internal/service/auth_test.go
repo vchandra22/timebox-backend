@@ -4,12 +4,10 @@ import (
 	"errors"
 	"testing"
 	"time"
-
-	"timebox-backend/internal/config"
 )
 
 func TestAuthTokenRoundTrip(t *testing.T) {
-	svc := newAuthService(nil, nil, nil, config.JWT{Secret: "test-secret", AccessTTLSeconds: 60})
+	svc := newAuthService(nil, nil, AuthOptions{Secret: "test-secret", AccessTTLSeconds: 60})
 
 	token, err := svc.signToken("user-1", "access", time.Minute)
 	if err != nil {

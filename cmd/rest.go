@@ -44,7 +44,11 @@ var restCommand = &cobra.Command{
 
 		dbExecutor := dbexecutor.New(log)
 		repositories := repository.New(appConfig.Database.PostgreSQL, appConfig.Redis, dbExecutor)
-		services := service.New(repositories, appConfig.Redis.Conn, appConfig.JWT)
+		services := service.New(repositories, service.AuthOptions{
+			Secret:            appConfig.JWT.Secret,
+			AccessTTLSeconds:  appConfig.JWT.AccessTTLSeconds,
+			RefreshTTLSeconds: appConfig.JWT.RefreshTTLSeconds,
+		})
 		handlers := handler.New(services)
 		r := router.NewRouter(handlers, log, appConfig.App.CORSAllowedOrigins, appConfig.App.GinMode)
 

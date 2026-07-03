@@ -10,6 +10,8 @@ components:
   middleware: { in: middleware }
   migration: { in: migration }
   repository_registry: { in: repository }
+  auth_repository: { in: repository/auth }
+  auth_repository_redis: { in: repository/auth/redis }
   dbexecutor: { in: repository/dbexecutor }
   health_repository: { in: repository/health }
   health_repository_database: { in: repository/health/database }
@@ -26,6 +28,7 @@ vendors:
   pgconn: { in: github.com/jackc/pgx/v5/pgconn }
   pgx_stdlib: { in: github.com/jackc/pgx/v5/stdlib }
   redis: { in: github.com/redis/go-redis/v9 }
+  bcrypt: { in: golang.org/x/crypto/bcrypt }
   sqlx: { in: github.com/jmoiron/sqlx }
   viper: { in: github.com/spf13/viper }
   zap: { in: go.uber.org/zap }
@@ -81,13 +84,18 @@ deps:
 
   service:
     mayDependOn:
+      - auth_repository
       - entity
       - health_repository
       - repository_registry
       - user_repository
+    canUse:
+      - bcrypt
 
   repository_registry:
     mayDependOn:
+      - auth_repository
+      - auth_repository_redis
       - config
       - dbexecutor
       - health_repository
@@ -99,6 +107,12 @@ deps:
     mayDependOn:
       - config
       - dbexecutor
+
+  auth_repository_redis:
+    mayDependOn:
+      - auth_repository
+    canUse:
+      - redis
 
   user_repository:
     mayDependOn:

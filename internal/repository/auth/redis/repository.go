@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	authrepo "timebox-backend/internal/repository/auth"
@@ -32,6 +33,18 @@ func (r *Repository) GetRefreshToken(ctx context.Context, token string) (string,
 
 func (r *Repository) DeleteRefreshToken(ctx context.Context, token string) error {
 	return r.client.Del(ctx, refreshTokenKey(token)).Err()
+}
+
+func (r *Repository) IncrementLoginAttempt(ctx context.Context, email string, ttl time.Duration) (int64, error) {
+	key := "auth:login:" + strings.ToLower(email)
+	count, err := r.client.Incr(ctx, key).Result()
+	if err != nil {
+		return 0, err
+	}
+	if count == 1 {
+		_ = r.client.Expire(ctx, key, ttl).Err()
+	}
+	return count, nil
 }
 
 func refreshTokenKey(token string) string {

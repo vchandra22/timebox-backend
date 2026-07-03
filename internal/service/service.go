@@ -1,10 +1,7 @@
 package service
 
 import (
-	"timebox-backend/internal/config"
 	"timebox-backend/internal/repository"
-
-	"github.com/redis/go-redis/v9"
 )
 
 type Service struct {
@@ -13,9 +10,9 @@ type Service struct {
 	User   *UserService
 }
 
-func New(repo *repository.Repository, redis *redis.Client, jwt config.JWT) *Service {
+func New(repo *repository.Repository, authOptions AuthOptions) *Service {
 	return &Service{
-		Auth:   newAuthService(repo.Auth, repo.User, redis, jwt),
+		Auth:   newAuthService(repo.Auth, repo.User, authOptions),
 		Health: newHealthService(repo.Health),
 		User:   newUserService(repo.User),
 	}

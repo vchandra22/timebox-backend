@@ -12,12 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"timebox-backend/internal/config"
 	"timebox-backend/internal/entity"
 	authrepo "timebox-backend/internal/repository/auth"
 	userrepo "timebox-backend/internal/repository/user"
 
-	"github.com/redis/go-redis/v9"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -38,8 +36,13 @@ var (
 type AuthService struct {
 	authRepo authrepo.Repository
 	userRepo userrepo.Repository
-	redis    *redis.Client
-	jwt      config.JWT
+	options  AuthOptions
+}
+
+type AuthOptions struct {
+	Secret            string
+	AccessTTLSeconds  int
+	RefreshTTLSeconds int
 }
 
 type TokenSet struct {
@@ -57,12 +60,11 @@ type tokenClaims struct {
 	ID        string `json:"jti"`
 }
 
-func newAuthService(repo authrepo.Repository, userRepo userrepo.Repository, redisClient *redis.Client, jwt config.JWT) *AuthService {
+func newAuthService(repo authrepo.Repository, userRepo userrepo.Repository, options AuthOptions) *AuthService {
 	return &AuthService{
 		authRepo: repo,
 		userRepo: userRepo,
-		redis:    redisClient,
-		jwt:      jwt,
+		options:  options,
 	}
 }
 
@@ -218,19 +220,15 @@ func (s *AuthService) parseToken(token, kind string) (tokenClaims, error) {
 }
 
 func (s *AuthService) signature(unsigned string) string {
-	mac := hmac.New(sha256.New, []byte(s.jwt.Secret))
+	mac := hmac.New(sha256.New, []byte(s.options.Secret))
 	mac.Write([]byte(unsigned))
 	return base64.RawURLEncoding.EncodeToString(mac.Sum(nil))
 }
 
 func (s *AuthService) checkLoginRateLimit(ctx context.Context, email string) error {
-	key := "auth:login:" + strings.ToLower(email)
-	count, err := s.redis.Incr(ctx, key).Result()
+	count, err := s.authRepo.IncrementLoginAttempt(ctx, email, time.Minute)
 	if err != nil {
 		return err
-	}
-	if count == 1 {
-		_ = s.redis.Expire(ctx, key, time.Minute).Err()
 	}
 	if count > 5 {
 		return ErrRateLimited
@@ -239,15 +237,15 @@ func (s *AuthService) checkLoginRateLimit(ctx context.Context, email string) err
 }
 
 func (s *AuthService) accessTTL() time.Duration {
-	if s.jwt.AccessTTLSeconds > 0 {
-		return time.Duration(s.jwt.AccessTTLSeconds) * time.Second
+	if s.options.AccessTTLSeconds > 0 {
+		return time.Duration(s.options.AccessTTLSeconds) * time.Second
 	}
 	return defaultAccessTTL
 }
 
 func (s *AuthService) refreshTTL() time.Duration {
-	if s.jwt.RefreshTTLSeconds > 0 {
-		return time.Duration(s.jwt.RefreshTTLSeconds) * time.Second
+	if s.options.RefreshTTLSeconds > 0 {
+		return time.Duration(s.options.RefreshTTLSeconds) * time.Second
 	}
 	return defaultRefreshTTL
 }
