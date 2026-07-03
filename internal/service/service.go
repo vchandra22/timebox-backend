@@ -6,6 +6,7 @@ import (
 
 type Service struct {
 	Auth      *AuthService
+	Execution *ExecutionService
 	Health    *HealthService
 	Planning  *PlanningService
 	User      *UserService
@@ -15,6 +16,7 @@ type Service struct {
 func New(repo *repository.Repository, authOptions AuthOptions) *Service {
 	return &Service{
 		Auth:      newAuthService(repo.Auth, repo.User, authOptions),
+		Execution: newExecutionService(repo.Execution, repo.ExecutionTimer, repo.Workspace),
 		Health:    newHealthService(repo.Health),
 		Planning:  newPlanningService(repo.Planning, repo.Workspace),
 		User:      newUserService(repo.User),

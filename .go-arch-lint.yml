@@ -12,6 +12,7 @@ components:
   repository_registry: { in: repository }
   feature_repository: { in: repository/* }
   feature_repository_database: { in: repository/*/database }
+  feature_repository_redis: { in: repository/*/redis }
   auth_repository: { in: repository/auth }
   auth_repository_redis: { in: repository/auth/redis }
   dbexecutor: { in: repository/dbexecutor }
@@ -106,6 +107,7 @@ deps:
       - dbexecutor
       - feature_repository
       - feature_repository_database
+      - feature_repository_redis
       - health_repository
       - health_repository_database
       - user_repository
@@ -139,6 +141,13 @@ deps:
     canUse:
       - pgconn
       - sqlx
+
+  feature_repository_redis:
+    mayDependOn:
+      - entity
+      - feature_repository
+    canUse:
+      - redis
 
   user_repository:
     mayDependOn:
