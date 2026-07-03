@@ -1,4 +1,4 @@
-module boilerplate-golang
+module timebox-backend
 
 go 1.26.4
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"boilerplate-golang/internal/config"
+	"timebox-backend/internal/config"
 
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"

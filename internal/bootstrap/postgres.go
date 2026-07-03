@@ -4,7 +4,7 @@ import (
 	"net"
 	"net/url"
 
-	"boilerplate-golang/internal/config"
+	"timebox-backend/internal/config"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"

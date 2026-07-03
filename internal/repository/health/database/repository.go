@@ -3,8 +3,8 @@ package database
 import (
 	"context"
 
-	"boilerplate-golang/internal/config"
-	"boilerplate-golang/internal/repository/dbexecutor"
+	"timebox-backend/internal/config"
+	"timebox-backend/internal/repository/dbexecutor"
 )
 
 type Repository struct {

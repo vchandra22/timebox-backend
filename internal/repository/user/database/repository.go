@@ -5,10 +5,10 @@ import (
 	"database/sql"
 	"errors"
 
-	"boilerplate-golang/internal/config"
-	"boilerplate-golang/internal/entity"
-	"boilerplate-golang/internal/repository/dbexecutor"
-	userrepo "boilerplate-golang/internal/repository/user"
+	"timebox-backend/internal/config"
+	"timebox-backend/internal/entity"
+	"timebox-backend/internal/repository/dbexecutor"
+	userrepo "timebox-backend/internal/repository/user"
 
 	"github.com/jackc/pgx/v5/pgconn"
 )

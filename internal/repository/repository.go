@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"boilerplate-golang/internal/config"
-	"boilerplate-golang/internal/repository/dbexecutor"
-	"boilerplate-golang/internal/repository/health"
-	"boilerplate-golang/internal/repository/health/database"
-	"boilerplate-golang/internal/repository/user"
-	userDatabase "boilerplate-golang/internal/repository/user/database"
+	"timebox-backend/internal/config"
+	"timebox-backend/internal/repository/dbexecutor"
+	"timebox-backend/internal/repository/health"
+	"timebox-backend/internal/repository/health/database"
+	"timebox-backend/internal/repository/user"
+	userDatabase "timebox-backend/internal/repository/user/database"
 )
 
 type Repository struct {

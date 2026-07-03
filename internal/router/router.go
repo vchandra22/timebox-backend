@@ -1,9 +1,9 @@
 package router
 
 import (
-	"boilerplate-golang/internal/handler"
-	"boilerplate-golang/internal/middleware"
 	"time"
+	"timebox-backend/internal/handler"
+	"timebox-backend/internal/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

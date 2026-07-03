@@ -1,6 +1,6 @@
 package service
 
-import "boilerplate-golang/internal/repository"
+import "timebox-backend/internal/repository"
 
 type Service struct {
 	Health *HealthService

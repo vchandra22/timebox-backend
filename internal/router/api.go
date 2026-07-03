@@ -1,7 +1,7 @@
 package router
 
 import (
-	"boilerplate-golang/internal/handler"
+	"timebox-backend/internal/handler"
 
 	"github.com/gin-gonic/gin"
 )

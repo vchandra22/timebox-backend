@@ -1,7 +1,7 @@
 package main
 
 import (
-	"boilerplate-golang/cmd"
+	"timebox-backend/cmd"
 )
 
 func main() {

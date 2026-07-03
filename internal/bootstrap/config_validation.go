@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"boilerplate-golang/internal/config"
+	"timebox-backend/internal/config"
 )
 
 func validateAppConfig(app config.App) error {

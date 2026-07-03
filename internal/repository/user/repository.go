@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"boilerplate-golang/internal/entity"
+	"timebox-backend/internal/entity"
 )
 
 var (

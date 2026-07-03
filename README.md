@@ -96,7 +96,7 @@ Default config:
 
 ```yaml
 app:
-  name: boilerplate-golang
+  name: timebox-backend
   gin_mode: release
   host: localhost
   port: 8080
@@ -148,7 +148,7 @@ go mod tidy
 Jika Go cache di environment read-only, gunakan:
 
 ```bash
-GOCACHE=/tmp/boilerplate-golang-gocache go mod tidy
+GOCACHE=/tmp/timebox-backend-gocache go mod tidy
 ```
 
 ## Run Application
@@ -168,7 +168,7 @@ go run . serve
 Jika perlu custom Go cache:
 
 ```bash
-GOCACHE=/tmp/boilerplate-golang-gocache go run . serve
+GOCACHE=/tmp/timebox-backend-gocache go run . serve
 ```
 
 Server berjalan di port dari `config.yaml`, default:
@@ -189,7 +189,7 @@ go build ./...
 Jika perlu custom Go cache:
 
 ```bash
-GOCACHE=/tmp/boilerplate-golang-gocache go build ./...
+GOCACHE=/tmp/timebox-backend-gocache go build ./...
 ```
 
 ## Production Readiness

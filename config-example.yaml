@@ -1,5 +1,5 @@
 app:
-  name: boilerplate-golang
+  name: timebox-backend
   gin_mode: debug
   host: localhost
   port: 8080

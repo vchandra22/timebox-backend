@@ -10,12 +10,12 @@ import (
 	"syscall"
 	"time"
 
-	"boilerplate-golang/internal/bootstrap"
-	"boilerplate-golang/internal/handler"
-	"boilerplate-golang/internal/repository"
-	"boilerplate-golang/internal/repository/dbexecutor"
-	"boilerplate-golang/internal/router"
-	"boilerplate-golang/internal/service"
+	"timebox-backend/internal/bootstrap"
+	"timebox-backend/internal/handler"
+	"timebox-backend/internal/repository"
+	"timebox-backend/internal/repository/dbexecutor"
+	"timebox-backend/internal/router"
+	"timebox-backend/internal/service"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

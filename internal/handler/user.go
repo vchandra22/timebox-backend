@@ -4,11 +4,11 @@ import (
 	"errors"
 	"net/http"
 
-	userdto "boilerplate-golang/internal/dto/user"
-	"boilerplate-golang/internal/entity"
-	"boilerplate-golang/internal/response"
-	"boilerplate-golang/internal/service"
-	"boilerplate-golang/internal/utils"
+	userdto "timebox-backend/internal/dto/user"
+	"timebox-backend/internal/entity"
+	"timebox-backend/internal/response"
+	"timebox-backend/internal/service"
+	"timebox-backend/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )

@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"strings"
 
-	"boilerplate-golang/internal/config"
+	"timebox-backend/internal/config"
 
 	"github.com/spf13/viper"
 )

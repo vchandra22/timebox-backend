@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"boilerplate-golang/internal/entity"
-	userrepo "boilerplate-golang/internal/repository/user"
+	"timebox-backend/internal/entity"
+	userrepo "timebox-backend/internal/repository/user"
 )
 
 type UserService struct {

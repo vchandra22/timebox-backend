@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"boilerplate-golang/internal/config"
+	"timebox-backend/internal/config"
 
 	"github.com/spf13/viper"
 	"go.uber.org/zap"

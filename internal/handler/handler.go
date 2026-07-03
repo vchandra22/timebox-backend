@@ -1,6 +1,6 @@
 package handler
 
-import "boilerplate-golang/internal/service"
+import "timebox-backend/internal/service"
 
 type Handler struct {
 	Health *HealthHandler

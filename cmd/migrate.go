@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"boilerplate-golang/internal/bootstrap"
-	"boilerplate-golang/internal/migration"
 	"context"
+	"timebox-backend/internal/bootstrap"
+	"timebox-backend/internal/migration"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

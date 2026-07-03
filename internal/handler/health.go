@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"boilerplate-golang/internal/response"
-	"boilerplate-golang/internal/service"
 	"net/http"
+	"timebox-backend/internal/response"
+	"timebox-backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
