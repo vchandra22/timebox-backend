@@ -10,6 +10,8 @@ components:
   middleware: { in: middleware }
   migration: { in: migration }
   repository_registry: { in: repository }
+  feature_repository: { in: repository/* }
+  feature_repository_database: { in: repository/*/database }
   auth_repository: { in: repository/auth }
   auth_repository_redis: { in: repository/auth/redis }
   dbexecutor: { in: repository/dbexecutor }
@@ -88,6 +90,7 @@ deps:
     mayDependOn:
       - auth_repository
       - entity
+      - feature_repository
       - health_repository
       - repository_registry
       - user_repository
@@ -101,6 +104,8 @@ deps:
       - auth_repository_redis
       - config
       - dbexecutor
+      - feature_repository
+      - feature_repository_database
       - health_repository
       - health_repository_database
       - user_repository
@@ -118,6 +123,19 @@ deps:
       - auth_repository
     canUse:
       - redis
+
+  feature_repository:
+    mayDependOn:
+      - entity
+
+  feature_repository_database:
+    mayDependOn:
+      - config
+      - dbexecutor
+      - entity
+      - feature_repository
+    canUse:
+      - pgconn
 
   user_repository:
     mayDependOn:
