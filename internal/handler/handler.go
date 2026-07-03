@@ -3,13 +3,15 @@ package handler
 import "timebox-backend/internal/service"
 
 type Handler struct {
-	Auth   *AuthHandler
-	Health *HealthHandler
+	Auth      *AuthHandler
+	Health    *HealthHandler
+	Workspace *WorkspaceHandler
 }
 
 func New(services *service.Service) *Handler {
 	return &Handler{
-		Auth:   newAuthHandler(services),
-		Health: newHealthHandler(services),
+		Auth:      newAuthHandler(services),
+		Health:    newHealthHandler(services),
+		Workspace: newWorkspaceHandler(services),
 	}
 }
