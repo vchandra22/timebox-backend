@@ -39,13 +39,12 @@ var restCommand = &cobra.Command{
 
 		appConfig := bootstrap.LoadConfig(configReader, log)
 		defer appConfig.Database.PostgreSQL.Conn.Close()
-		if appConfig.Redis.Conn != nil {
-			defer appConfig.Redis.Conn.Close()
-		}
+		appConfig.Redis.Conn = bootstrap.RedisInit(ctx, appConfig.Redis, log)
+		defer appConfig.Redis.Conn.Close()
 
 		dbExecutor := dbexecutor.New(log)
-		repositories := repository.New(appConfig.Database.PostgreSQL, dbExecutor)
-		services := service.New(repositories)
+		repositories := repository.New(appConfig.Database.PostgreSQL, appConfig.Redis, dbExecutor)
+		services := service.New(repositories, appConfig.Redis.Conn, appConfig.JWT)
 		handlers := handler.New(services)
 		r := router.NewRouter(handlers, log, appConfig.App.CORSAllowedOrigins, appConfig.App.GinMode)
 

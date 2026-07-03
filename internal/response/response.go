@@ -6,6 +6,7 @@ type SuccessResponse[T any] struct {
 	Status  bool   `json:"status"`
 	Message string `json:"message"`
 	Data    T      `json:"data"`
+	Meta    any    `json:"meta"`
 }
 
 type PaginatedResponse[T any] struct {
@@ -18,6 +19,8 @@ type PaginatedResponse[T any] struct {
 type MessageResponse struct {
 	Status  bool   `json:"status"`
 	Message string `json:"message"`
+	Data    any    `json:"data"`
+	Meta    any    `json:"meta"`
 }
 
 type Pagination struct {
@@ -52,6 +55,7 @@ func WithData[T any](ctx *gin.Context, data T, message string, code int) {
 		Status:  true,
 		Message: message,
 		Data:    data,
+		Meta:    nil,
 	})
 }
 
@@ -68,6 +72,8 @@ func WithoutData(ctx *gin.Context, message string, code int) {
 	ctx.JSON(code, MessageResponse{
 		Status:  true,
 		Message: message,
+		Data:    nil,
+		Meta:    nil,
 	})
 }
 

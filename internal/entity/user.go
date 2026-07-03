@@ -3,9 +3,13 @@ package entity
 import "time"
 
 type User struct {
-	ID        string
-	Name      string
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID              string
+	FullName        string
+	Email           string
+	PasswordHash    string
+	Timezone        string
+	AvatarURL       *string
+	EmailVerifiedAt *time.Time
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }

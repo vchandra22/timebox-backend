@@ -29,7 +29,7 @@ func NewRepository(db config.PostgreSQL, dbExecutor *dbexecutor.Executor) *Repos
 
 func (r *Repository) Create(ctx context.Context, user entity.User) (entity.User, error) {
 	var row Row
-	err := userError(r.dbExecutor.Get(ctx, r.db.Conn, &row, QueryCreateUser, user.Name, user.Email))
+	err := userError(r.dbExecutor.Get(ctx, r.db.Conn, &row, QueryCreateUser, user.FullName, user.Email, user.PasswordHash, user.Timezone))
 	return row.toEntity(), err
 }
 
@@ -58,9 +58,15 @@ func (r *Repository) FindByID(ctx context.Context, id string) (entity.User, erro
 	return row.toEntity(), err
 }
 
+func (r *Repository) FindByEmail(ctx context.Context, email string) (entity.User, error) {
+	var row Row
+	err := userError(r.dbExecutor.Get(ctx, r.db.Conn, &row, QueryFindUserByEmail, email))
+	return row.toEntity(), err
+}
+
 func (r *Repository) Update(ctx context.Context, user entity.User) (entity.User, error) {
 	var row Row
-	err := userError(r.dbExecutor.Get(ctx, r.db.Conn, &row, QueryUpdateUser, user.ID, user.Name, user.Email))
+	err := userError(r.dbExecutor.Get(ctx, r.db.Conn, &row, QueryUpdateUser, user.ID, user.FullName, user.Email, user.Timezone, user.AvatarURL))
 	return row.toEntity(), err
 }
 
@@ -86,10 +92,14 @@ func isUniqueViolation(err error) bool {
 
 func (r Row) toEntity() entity.User {
 	return entity.User{
-		ID:        r.ID,
-		Name:      r.Name,
-		Email:     r.Email,
-		CreatedAt: r.CreatedAt,
-		UpdatedAt: r.UpdatedAt,
+		ID:              r.ID,
+		FullName:        r.FullName,
+		Email:           r.Email,
+		PasswordHash:    r.PasswordHash,
+		Timezone:        r.Timezone,
+		AvatarURL:       r.AvatarURL,
+		EmailVerifiedAt: r.EmailVerifiedAt,
+		CreatedAt:       r.CreatedAt,
+		UpdatedAt:       r.UpdatedAt,
 	}
 }

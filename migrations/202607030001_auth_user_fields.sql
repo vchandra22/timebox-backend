@@ -1,0 +1,10 @@
+ALTER TABLE users RENAME COLUMN name TO full_name;
+
+ALTER TABLE users
+	ADD COLUMN IF NOT EXISTS password_hash TEXT,
+	ADD COLUMN IF NOT EXISTS timezone TEXT NOT NULL DEFAULT 'UTC',
+	ADD COLUMN IF NOT EXISTS avatar_url TEXT,
+	ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMPTZ;
+
+UPDATE users SET password_hash = '' WHERE password_hash IS NULL;
+ALTER TABLE users ALTER COLUMN password_hash SET NOT NULL;

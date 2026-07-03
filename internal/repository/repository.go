@@ -2,6 +2,8 @@ package repository
 
 import (
 	"timebox-backend/internal/config"
+	"timebox-backend/internal/repository/auth"
+	authRedis "timebox-backend/internal/repository/auth/redis"
 	"timebox-backend/internal/repository/dbexecutor"
 	"timebox-backend/internal/repository/health"
 	"timebox-backend/internal/repository/health/database"
@@ -10,12 +12,14 @@ import (
 )
 
 type Repository struct {
+	Auth   auth.Repository
 	Health health.Repository
 	User   user.Repository
 }
 
-func New(db config.PostgreSQL, dbExecutor *dbexecutor.Executor) *Repository {
+func New(db config.PostgreSQL, redis config.Redis, dbExecutor *dbexecutor.Executor) *Repository {
 	return &Repository{
+		Auth:   authRedis.NewRepository(redis.Conn),
 		Health: database.NewRepository(db, dbExecutor),
 		User:   userDatabase.NewRepository(db, dbExecutor),
 	}

@@ -80,7 +80,7 @@ Rules:
 
 - Go sesuai versi di `go.mod`
 - PostgreSQL berjalan sesuai `config.yaml`
-- Redis hanya perlu berjalan jika fitur yang memakai Redis diaktifkan
+- Redis berjalan sesuai `config.yaml`
 
 ## Config
 
@@ -122,6 +122,8 @@ redis:
 
 jwt:
   secret:
+  access_ttl_seconds: 900
+  refresh_ttl_seconds: 2592000
 
 external:
   aws:
@@ -206,7 +208,7 @@ Sudah diimplementasikan:
 
 - Startup memvalidasi `app.port`, `app.cors_allowed_origins`, dan config
   PostgreSQL.
-- Redis tidak lagi wajib connect saat startup karena belum dipakai oleh fitur.
+- Redis wajib connect saat startup karena auth menyimpan refresh token di Redis.
 - HTTP server memakai read-header, read, write, dan idle timeout.
 - Shutdown menangani `SIGINT`/`SIGTERM`, lalu menutup HTTP server dan koneksi
   database secara rapi.
@@ -325,59 +327,40 @@ GET /api/v1/health/ready
 `/health/live` hanya memastikan proses HTTP hidup. `/health/ready` dan
 `/health/` mengecek kesiapan dependency database.
 
-Users:
+Auth:
 
 ```text
-POST   /api/v1/users/
-GET    /api/v1/users/?page=1&limit=10
-GET    /api/v1/users/:id
-PUT    /api/v1/users/:id
-DELETE /api/v1/users/:id
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+POST /api/v1/auth/refresh
+POST /api/v1/auth/logout
 ```
 
-List user query:
-
-- `page`: default `1`
-- `limit`: default `10`, max `100`
-
-List user response memakai pagination meta:
+Register request:
 
 ```json
 {
-  "status": true,
-  "message": "users fetched",
-  "data": [],
-  "meta": {
-    "page": 1,
-    "limit": 10,
-    "total": 35,
-    "totalPages": 4
-  }
+  "full_name": "John Doe",
+  "email": "john@example.com",
+  "password": "Secret123!",
+  "timezone": "Asia/Jakarta"
 }
 ```
 
-Create user request:
+Login request:
 
 ```json
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+  "email": "john@example.com",
+  "password": "Secret123!"
 }
 ```
 
-Success response:
+Refresh/logout request:
 
 ```json
 {
-  "status": true,
-  "message": "user fetched",
-  "data": {
-    "id": "uuid",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "createdAt": "2026-06-30T00:00:00Z",
-    "updatedAt": "2026-06-30T00:00:00Z"
-  }
+  "refresh_token": "jwt-refresh-token"
 }
 ```
 

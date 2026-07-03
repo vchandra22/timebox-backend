@@ -29,6 +29,8 @@ func LoadExternalConfig(configReader *viper.Viper) config.External {
 
 func LoadJWTConfig(configReader *viper.Viper) config.JWT {
 	return config.JWT{
-		Secret: configReader.GetString("jwt.secret"),
+		Secret:            configReader.GetString("jwt.secret"),
+		AccessTTLSeconds:  configReader.GetInt("jwt.access_ttl_seconds"),
+		RefreshTTLSeconds: configReader.GetInt("jwt.refresh_ttl_seconds"),
 	}
 }

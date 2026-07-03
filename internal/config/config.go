@@ -45,7 +45,9 @@ type Redis struct {
 }
 
 type JWT struct {
-	Secret string
+	Secret            string
+	AccessTTLSeconds  int
+	RefreshTTLSeconds int
 }
 
 type External struct {

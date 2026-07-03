@@ -39,6 +39,11 @@ func (s *UserService) FindByID(ctx context.Context, id string) (entity.User, err
 	return user, userError(err)
 }
 
+func (s *UserService) FindByEmail(ctx context.Context, email string) (entity.User, error) {
+	user, err := s.repo.FindByEmail(ctx, email)
+	return user, userError(err)
+}
+
 func (s *UserService) Update(ctx context.Context, user entity.User) (entity.User, error) {
 	updatedUser, err := s.repo.Update(ctx, user)
 	return updatedUser, userError(err)

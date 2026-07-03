@@ -25,6 +25,8 @@ redis:
 
 jwt:
   secret: change-me
+  access_ttl_seconds: 900
+  refresh_ttl_seconds: 2592000
 
 external:
   aws:
