@@ -117,6 +117,8 @@ deps:
     mayDependOn:
       - config
       - dbexecutor
+    canUse:
+      - sqlx
 
   auth_repository_redis:
     mayDependOn:
@@ -136,6 +138,7 @@ deps:
       - feature_repository
     canUse:
       - pgconn
+      - sqlx
 
   user_repository:
     mayDependOn:
@@ -149,6 +152,7 @@ deps:
       - user_repository
     canUse:
       - pgconn
+      - sqlx
 
   workspace_repository:
     mayDependOn:
@@ -162,6 +166,7 @@ deps:
       - workspace_repository
     canUse:
       - pgconn
+      - sqlx
 
   response:
     canUse:
