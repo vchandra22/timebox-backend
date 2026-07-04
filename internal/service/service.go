@@ -5,6 +5,7 @@ import (
 )
 
 type Service struct {
+	Analytics     *AnalyticsService
 	Auth          *AuthService
 	Collaboration *CollaborationService
 	Execution     *ExecutionService
@@ -16,6 +17,7 @@ type Service struct {
 
 func New(repo *repository.Repository, authOptions AuthOptions, collaborationOptions CollaborationOptions) *Service {
 	return &Service{
+		Analytics:     newAnalyticsService(repo.Analytics, repo.Workspace),
 		Auth:          newAuthService(repo.Auth, repo.User, authOptions),
 		Collaboration: newCollaborationService(repo.Collaboration, repo.Workspace, collaborationOptions),
 		Execution:     newExecutionService(repo.Execution, repo.ExecutionTimer, repo.Workspace),

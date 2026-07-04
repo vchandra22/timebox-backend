@@ -9,6 +9,7 @@ import (
 func registerRoutes(r *gin.Engine, handlers *handler.Handler) {
 	api := r.Group("/api/v1")
 
+	handlers.Analytics.RegisterRoutes(api)
 	handlers.Auth.RegisterRoutes(api)
 	handlers.Collaboration.RegisterRoutes(api)
 	handlers.Execution.RegisterRoutes(api)
