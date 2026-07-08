@@ -26,11 +26,11 @@ func (h *WorkspaceHandler) RegisterRoutes(routeGroup *gin.RouterGroup) {
 	workspaces := routeGroup.Group("/workspaces")
 	workspaces.GET("", h.ListWorkspaces)
 	workspaces.POST("", h.CreateWorkspace)
-	workspaces.GET("/:id", h.GetWorkspace)
-	workspaces.PATCH("/:id", h.UpdateWorkspace)
-	workspaces.POST("/:id/invite", h.InviteMember)
-	workspaces.GET("/:id/members", h.ListMembers)
-	workspaces.PATCH("/:id/members/:userId", h.UpdateMember)
+	workspaces.GET("/:wsId", h.GetWorkspace)
+	workspaces.PATCH("/:wsId", h.UpdateWorkspace)
+	workspaces.POST("/:wsId/invite", h.InviteMember)
+	workspaces.GET("/:wsId/members", h.ListMembers)
+	workspaces.PATCH("/:wsId/members/:userId", h.UpdateMember)
 	workspaces.GET("/:wsId/teams", h.ListTeams)
 	workspaces.POST("/:wsId/teams", h.CreateTeam)
 
@@ -79,7 +79,7 @@ func (h *WorkspaceHandler) GetWorkspace(ctx *gin.Context) {
 	if !ok {
 		return
 	}
-	workspace, err := h.workspaceService.FindByID(ctx, userID, ctx.Param("id"))
+	workspace, err := h.workspaceService.FindByID(ctx, userID, ctx.Param("wsId"))
 	if err != nil {
 		writeWorkspaceError(ctx, err)
 		return
@@ -97,7 +97,7 @@ func (h *WorkspaceHandler) UpdateWorkspace(ctx *gin.Context) {
 		response.Error(ctx, "bad request", "invalid request", http.StatusBadRequest)
 		return
 	}
-	patch := entity.Workspace{ID: ctx.Param("id")}
+	patch := entity.Workspace{ID: ctx.Param("wsId")}
 	if req.Name != nil {
 		patch.Name = *req.Name
 	}
@@ -134,7 +134,7 @@ func (h *WorkspaceHandler) InviteMember(ctx *gin.Context) {
 		response.Error(ctx, "bad request", "invalid request", http.StatusBadRequest)
 		return
 	}
-	invitation, err := h.workspaceService.InviteMember(ctx, userID, ctx.Param("id"), entity.WorkspaceInvitation{Email: req.Email, Role: req.Role}, req.TeamIDs)
+	invitation, err := h.workspaceService.InviteMember(ctx, userID, ctx.Param("wsId"), entity.WorkspaceInvitation{Email: req.Email, Role: req.Role}, req.TeamIDs)
 	if err != nil {
 		writeWorkspaceError(ctx, err)
 		return
@@ -151,7 +151,7 @@ func (h *WorkspaceHandler) ListMembers(ctx *gin.Context) {
 	if !ok {
 		return
 	}
-	members, total, err := h.workspaceService.ListMembers(ctx, userID, ctx.Param("id"), ctx.Query("role"), ctx.Query("status"), ctx.Query("q"), pagination.Page, pagination.Limit)
+	members, total, err := h.workspaceService.ListMembers(ctx, userID, ctx.Param("wsId"), ctx.Query("role"), ctx.Query("status"), ctx.Query("q"), pagination.Page, pagination.Limit)
 	if err != nil {
 		writeWorkspaceError(ctx, err)
 		return
@@ -180,7 +180,7 @@ func (h *WorkspaceHandler) UpdateMember(ctx *gin.Context) {
 		patch.TeamIDs = *req.TeamIDs
 		patch.TeamIDsSet = true
 	}
-	member, err := h.workspaceService.UpdateMember(ctx, userID, ctx.Param("id"), ctx.Param("userId"), patch)
+	member, err := h.workspaceService.UpdateMember(ctx, userID, ctx.Param("wsId"), ctx.Param("userId"), patch)
 	if err != nil {
 		writeWorkspaceError(ctx, err)
 		return

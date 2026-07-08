@@ -879,7 +879,7 @@ Business rule:
 ### 7.3 Get Workspace Detail
 
 ```http
-GET /api/v1/workspaces/:id
+GET /api/v1/workspaces/:wsId
 ```
 
 Auth: required
@@ -916,7 +916,7 @@ Response 200:
 ### 7.4 Update Workspace
 
 ```http
-PATCH /api/v1/workspaces/:id
+PATCH /api/v1/workspaces/:wsId
 ```
 
 Auth: owner/admin
@@ -963,7 +963,7 @@ Response 200:
 ### 7.5 Invite Workspace Member
 
 ```http
-POST /api/v1/workspaces/:id/invite
+POST /api/v1/workspaces/:wsId/invite
 ```
 
 Auth: owner/admin
@@ -1002,7 +1002,7 @@ Response 201:
 ### 7.6 List Workspace Members
 
 ```http
-GET /api/v1/workspaces/:id/members
+GET /api/v1/workspaces/:wsId/members
 ```
 
 Auth: workspace member
@@ -1053,7 +1053,7 @@ Response 200:
 ### 7.7 Update Workspace Member
 
 ```http
-PATCH /api/v1/workspaces/:id/members/:userId
+PATCH /api/v1/workspaces/:wsId/members/:userId
 ```
 
 Auth: owner/admin
@@ -4488,8 +4488,8 @@ v1 := router.Group("/api/v1")
     workspace := v1.Group("/workspaces", authMiddleware)
     workspace.GET("", workspaceHandler.List)
     workspace.POST("", workspaceHandler.Create)
-    workspace.GET("/:id", workspaceHandler.Detail)
-    workspace.PATCH("/:id", workspaceHandler.Update)
+    workspace.GET("/:wsId", workspaceHandler.Detail)
+    workspace.PATCH("/:wsId", workspaceHandler.Update)
 
     task := v1.Group("/tasks", authMiddleware)
     task.GET("/:id", taskHandler.Detail)
@@ -4641,11 +4641,11 @@ DELETE /api/v1/me/sessions/:sessionId
 WORKSPACE
 GET    /api/v1/workspaces
 POST   /api/v1/workspaces
-GET    /api/v1/workspaces/:id
-PATCH  /api/v1/workspaces/:id
-POST   /api/v1/workspaces/:id/invite
-GET    /api/v1/workspaces/:id/members
-PATCH  /api/v1/workspaces/:id/members/:userId
+GET    /api/v1/workspaces/:wsId
+PATCH  /api/v1/workspaces/:wsId
+POST   /api/v1/workspaces/:wsId/invite
+GET    /api/v1/workspaces/:wsId/members
+PATCH  /api/v1/workspaces/:wsId/members/:userId
 
 TEAM
 GET    /api/v1/workspaces/:wsId/teams
